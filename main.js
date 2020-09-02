@@ -1,5 +1,6 @@
 let turn = "X"
 let winner = undefined
+let turnCounter = 0;
 
 const cells = Array.from(document.getElementsByClassName("cell"))
 const board = document.getElementById("board")
@@ -16,13 +17,19 @@ function boardClicked(event) {
     }
 
     cell.innerText = turn
+    turnCounter++;
+
     checkWinner()
-    if (!winner) {
+    if (!winner && turnCounter < 9) {
         turn = turn == "X" ? "O" : "X";
         turnHeader.innerText = `It's ${turn} turn`
     }
+    else if (!!winner) {
+        turnHeader.innerText = `The winner is ${winner}!`
+    }
     else {
-        turnHeader.innerText = `the winner is ${winner}!`
+        turnHeader.innerText = `It's a tie!`
+        cells.forEach(cell => cell.style.background = "green")
     }
 
 
@@ -35,6 +42,7 @@ function resetGame() {
     })
     turnHeader.innerText = `${turn} starts!`
     winner = undefined
+    turnCounter = 0;
 }
 
 function checkWinner() {
